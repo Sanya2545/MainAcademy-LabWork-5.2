@@ -14,6 +14,8 @@ namespace Hello_Serialization_stud
     {
         static void Main(string[] args)
         {
+            Student student = new Student("1", "Bob", 19, "22210 Campony place");
+            Console.WriteLine(student);
                 // Create instance of Student class
                 // Initialize its properties
                 // Call methods for serialization and deserialization
