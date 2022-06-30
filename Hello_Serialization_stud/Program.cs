@@ -15,38 +15,38 @@ namespace Hello_Serialization_stud
     {
         static void Main(string[] args)
         {
-            string filepath = "Serialize.json";
+            string filepathJson = "Serialize.json";
+            string filepathXml = "Serialize.xml";
+            string filepathBin = "Serialize.bin";
             Student student = new Student("1", "Bob", 19, "22210 Campony place");
-            Console.WriteLine(student);
-            string strJson = JsonConvert.SerializeObject(student);
-            File.AppendAllText(filepath, strJson);
-            Student tempStudent;
-            try
-            {
-                using (FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-                {
-                    StreamReader sr = new StreamReader(fs);
-                    tempStudent = JsonConvert.DeserializeObject<Student>(sr.ReadLine());
-                }
-                Console.WriteLine(tempStudent);
-
-            }
-            catch (JsonReaderException ex)
-            {
-                Console.WriteLine("\nMessage : " + ex.Message + "\n");
-            }
+            Console.WriteLine(JsonFrm(student, filepathJson)); 
+            Console.WriteLine(XmlFrm(student, filepathXml)); 
+            Console.WriteLine(JsonFrm(student, filepathBin)); 
                 // Create instance of Student class
                 // Initialize its properties
                 
                 // Call methods for serialization and deserialization
         }
-        public static void BinaryFrm(Student p, string filepath)
+        public static string JsonFrm(Student p, string filepath)
+        {
+            string strJson = JsonConvert.SerializeObject(p);
+            File.WriteAllText(filepath, strJson);
+            Student temp;
+            using (FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            {
+                StreamReader sr = new StreamReader(fs);
+                temp = JsonConvert.DeserializeObject<Student>(sr.ReadLine());
+            }
+            return "Json formatting Deserialized : " + temp;
+        }
+        public static string BinaryFrm(Student p, string filepath)
         {
             using(FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
                 binaryFormatter.Serialize(fs, p);
-
+                Student temp = (Student)binaryFormatter.Deserialize(fs);
+                return "Binary formatting Deserialized : " + temp;
             }
         }
         // Impement BinaryFrm(Student p) method to serialize and deserialize p
@@ -55,16 +55,18 @@ namespace Hello_Serialization_stud
         // Implement BinaryFormatter object creation and p serialization  in using block for FileStream object
 
         // Implement BinaryFormatter object creation and  deserialization  in using block for FileStream object
-            // Write deserialization result to console
+        // Write deserialization result to console
 
-        // Impement SoapFrm(Student p) method to serialize and deserialize p
-
-        // Define path for file
-        // Implement SoapFormatter object creation and p serialization  in using block for FileStream object
-
-        // Implement SoapFormatter object creation and  deserialization  in using block for FileStream object
-            // Write deserialization result to console
-
+        public static string XmlFrm(Student p, string filepath)
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Student));
+            using (FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            {
+                xmlSerializer.Serialize(fs, p);
+                Student temp = (Student)xmlSerializer.Deserialize(fs);
+                return "Xml formatting Deserialized : " + temp;
+            }
+        }
         // Impement XmlFrm(Student p) method to serialize and deserialize p 
 
         // Define path for file
@@ -73,7 +75,7 @@ namespace Hello_Serialization_stud
 
         // Create XmlSerializer deserializer typeof Student 
         // Implement   deserialization  in using block for FileStream object
-            // Write deserialization result to console
+        // Write deserialization result to console
 
     }
 }

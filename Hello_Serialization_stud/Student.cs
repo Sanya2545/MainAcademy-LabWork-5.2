@@ -25,7 +25,13 @@ namespace Hello_Serialization_stud
             get { return adress; }
             set { adress = value; }
         }
-
+        public Student()
+        {
+            Name = "_";
+            Age = 0;
+            Code = "_";
+            Adress = "_";
+        }
         public Student(string code = "", string name = "", int age = 0, string adress = "")
         {
             Name = name;
