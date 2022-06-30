@@ -21,7 +21,7 @@ namespace Hello_Serialization_stud
             Student student = new Student("1", "Bob", 19, "22210 Campony place");
             Console.WriteLine(JsonFrm(student, filepathJson)); 
             Console.WriteLine(XmlFrm(student, filepathXml)); 
-            Console.WriteLine(JsonFrm(student, filepathBin)); 
+            Console.WriteLine(BinaryFrm(student, filepathBin)); 
                 // Create instance of Student class
                 // Initialize its properties
                 
@@ -60,9 +60,12 @@ namespace Hello_Serialization_stud
         public static string XmlFrm(Student p, string filepath)
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(Student));
-            using (FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            using (FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.Write))
             {
                 xmlSerializer.Serialize(fs, p);
+            }
+            using (FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.Read))
+            {
                 Student temp = (Student)xmlSerializer.Deserialize(fs);
                 return "Xml formatting Deserialized : " + temp;
             }
