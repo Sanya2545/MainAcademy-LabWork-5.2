@@ -7,6 +7,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Formatters.Soap;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace Hello_Serialization_stud
 {
@@ -14,13 +15,40 @@ namespace Hello_Serialization_stud
     {
         static void Main(string[] args)
         {
+            string filepath = "Serialize.json";
             Student student = new Student("1", "Bob", 19, "22210 Campony place");
             Console.WriteLine(student);
+            string strJson = JsonConvert.SerializeObject(student);
+            File.AppendAllText(filepath, strJson);
+            Student tempStudent;
+            try
+            {
+                using (FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    StreamReader sr = new StreamReader(fs);
+                    tempStudent = JsonConvert.DeserializeObject<Student>(sr.ReadLine());
+                }
+                Console.WriteLine(tempStudent);
+
+            }
+            catch (JsonReaderException ex)
+            {
+                Console.WriteLine("\nMessage : " + ex.Message + "\n");
+            }
                 // Create instance of Student class
                 // Initialize its properties
+                
                 // Call methods for serialization and deserialization
         }
+        public static void BinaryFrm(Student p, string filepath)
+        {
+            using(FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Serialize(fs, p);
 
+            }
+        }
         // Impement BinaryFrm(Student p) method to serialize and deserialize p
 
         // Define path for file

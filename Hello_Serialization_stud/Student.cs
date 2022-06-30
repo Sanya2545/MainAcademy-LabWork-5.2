@@ -41,7 +41,7 @@ namespace Hello_Serialization_stud
         // Create SetAddress(string address, string code) method
         public override string ToString()
         {
-            return $"Name : {Name}, Age : {Age}, Code : {Code}";
+            return $"Code : {Code}, Name : {Name}, Age : {Age}, Adress : {Adress}";
         }
         // Override ToString() method
 
