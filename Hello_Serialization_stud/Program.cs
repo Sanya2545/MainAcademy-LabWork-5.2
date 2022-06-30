@@ -41,10 +41,15 @@ namespace Hello_Serialization_stud
         }
         public static string BinaryFrm(Student p, string filepath)
         {
-            using(FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            using(FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.Write))
             {
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
                 binaryFormatter.Serialize(fs, p);
+                
+            }
+            using (FileStream fs = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.Read))
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
                 Student temp = (Student)binaryFormatter.Deserialize(fs);
                 return "Binary formatting Deserialized : " + temp;
             }
